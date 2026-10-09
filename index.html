@@ -92,12 +92,13 @@ button:active{transform:scale(.98)}
 <p class="note">Diagram is illustrative and not to scale. Rotate the conduit 180° between bends to keep the offset in the same plane.</p>
 </div></section>
 <section id="stub" class="panel hidden"><div class="card">
-<h2>90° stub-up calculator</h2><p class="note">Mark = desired stub height minus the bender's take-up.</p>
+<h2>90° stub-up calculator</h2><p class="note">Choose the conduit size, then enter the take-up verified for your exact bender.</p>
+<label for="stubSize">Conduit size</label><select id="stubSize" class="sizeSelect"><option value="1/2">½-inch EMT</option><option value="3/4" selected>¾-inch EMT</option><option value="1">1-inch EMT</option><option value="1-1/4">1¼-inch EMT</option><option value="1-1/2">1½-inch EMT</option><option value="2">2-inch EMT</option></select>
 <label for="height">Desired stub height (inches)</label><input id="height" type="number" inputmode="decimal" min="0" step="0.125" value="24">
-<label for="takeup">Bender take-up (inches)</label><input id="takeup" type="number" inputmode="decimal" min="0" step="0.125" value="5">
+<label for="takeup">Verified bender take-up (inches)</label><input id="takeup" type="number" inputmode="decimal" min="0" step="0.125" placeholder="Enter verified value">
 <div class="result"><small>Mark from conduit end</small><div class="big" id="stubMark">19.00 in</div><div class="note" id="stubNote">24.00 − 5.00 take-up</div></div>
 <svg class="diagram" viewBox="0 0 340 145" role="img" aria-label="90 degree stub up diagram"><path d="M45 118 L45 42 Q45 25 62 25 L300 25" fill="none" stroke="#f5b82e" stroke-width="6" stroke-linecap="round"/><path d="M73 118 L73 25" stroke="#dce8fb" stroke-width="1.5" stroke-dasharray="4 4"/><path d="M66 118 L80 118 M66 25 L80 25" stroke="#dce8fb" stroke-width="1.5"/><text x="83" y="74" fill="#dce8fb" font-size="11">Stub height</text><text x="95" y="137" fill="#aebbd0" font-size="11">Conduit end / mark depends on take-up</text></svg>
-<p class="note">Take-up varies by bender and conduit size. Use the value marked on your bender or in its instructions.</p>
+<p class="note" id="takeupReminder">Selected: ¾-inch EMT. Take-up varies by bender model and conduit size. Enter a value only after checking the marking or manufacturer instructions for your exact bender.</p>
 </div></section>
 <section id="diagrams" class="panel hidden"><div class="card">
 <h2>Visual bend-mark guide</h2><span class="pill">Illustrative diagrams</span>
@@ -222,6 +223,9 @@ button:active{transform:scale(.98)}
 <div class="card">
 <h2>Professional bend walkthroughs</h2>
 <p class="note">Choose a bend to see the workflow, measurement reminders, and a simple visual sequence. Drawings are illustrative—not scale templates.</p>
+<label for="stepSize">Conduit size</label>
+<select id="stepSize" class="sizeSelect"><option value="1/2">½-inch EMT</option><option value="3/4" selected>¾-inch EMT</option><option value="1">1-inch EMT</option><option value="1-1/4">1¼-inch EMT</option><option value="1-1/2">1½-inch EMT</option><option value="2">2-inch EMT</option></select>
+<p class="note" id="stepSizeNote">Walkthrough size: ¾-inch EMT. Verify the bender is rated for this size.</p>
 <label for="stepType">Bend procedure</label>
 <select id="stepType">
 <option value="offset">Two-bend offset</option>
@@ -252,7 +256,7 @@ button:active{transform:scale(.98)}
 const data={"10":{m:5.76,s:1/16},"22.5":{m:2.6,s:3/16},"30":{m:2,s:1/4},"45":{m:1.4,s:3/8},"60":{m:1.155,s:1/2}};
 const $=id=>document.getElementById(id);function fmt(n){return Number.isFinite(n)?n.toFixed(2)+" in":"—"}
 function updateOffset(){let rise=Math.max(0,Number($("rise").value)||0),a=data[$("angle").value];$("spacing").textContent=fmt(rise*a.m);$("spacingNote").textContent=`${rise.toFixed(2)} in rise × ${a.m} multiplier`;$("shrink").textContent=fmt(rise*a.s);$("multiplier").textContent=a.m.toFixed(3).replace(/0+$/,"").replace(/\.$/,"")+"×";$("diagramSpacing").textContent=fmt(rise*a.m)+" apart"}
-function updateStub(){let h=Number($("height").value)||0,t=Number($("takeup").value)||0,m=h-t;$("stubMark").textContent=fmt(m);$("stubNote").textContent=`${h.toFixed(2)} − ${t.toFixed(2)} take-up${m<0?" (check inputs)":""}`}
+function updateStub(){let h=Number($("height").value)||0,raw=$("takeup").value,t=Number(raw),valid=raw.trim()!==""&&Number.isFinite(t)&&t>=0,m=h-t;$("stubMark").textContent=valid?fmt(m):"Enter take-up";$("stubNote").textContent=valid?`${h.toFixed(2)} − ${t.toFixed(2)} take-up${m<0?" (check inputs)":""}`:"Use the verified value for the selected conduit size and bender.";$("takeupReminder").textContent=`Selected: ${sizeLabel($("stubSize").value)}. Verify take-up for this size and your exact bender model; do not assume a universal value.`}
 const diagrams={
 offset:{title:"Two-bend offset",desc:"Two bends in opposite directions create an offset around an obstruction.",svg:'<path d="M20 125 L95 125 L220 55 L320 55" fill="none" stroke="#f5b82e" stroke-width="7" stroke-linecap="round"/><path d="M95 145 L220 145" stroke="#dce8fb" stroke-dasharray="4 4"/><path d="M95 138v14 M220 138v14" stroke="#dce8fb"/><text x="157" y="164" fill="#dce8fb" font-size="12" text-anchor="middle">Mark spacing</text><text x="20" y="109" fill="#aebbd0" font-size="11">1st mark</text><text x="220" y="39" fill="#aebbd0" font-size="11">2nd mark</text>'},
 stub:{title:"90° stub-up",desc:"A 90° bend forms a vertical stub. The mark location depends on the specific bender's take-up.",svg:'<path d="M35 145 L35 48 Q35 25 58 25 L318 25" fill="none" stroke="#f5b82e" stroke-width="7" stroke-linecap="round"/><path d="M67 145 V25" stroke="#dce8fb" stroke-dasharray="4 4"/><text x="78" y="83" fill="#dce8fb" font-size="12">Stub height</text><text x="78" y="137" fill="#aebbd0" font-size="11">Start/end reference</text>'},
@@ -260,7 +264,7 @@ kick:{title:"Kick bend",desc:"A single angled bend lifts conduit over a small ob
 saddle:{title:"Three-bend saddle concept",desc:"A center bend lifts over the obstruction, with two outer bends bringing the conduit back to its original path. Use your training and bender-specific layout rules.",svg:'<path d="M15 125 L82 125 L132 65 L208 65 L258 125 L325 125" fill="none" stroke="#f5b82e" stroke-width="7" stroke-linecap="round"/><rect x="140" y="90" width="60" height="35" rx="3" fill="#34425d" stroke="#aebbd0"/><text x="170" y="111" fill="#f4f7fb" font-size="10" text-anchor="middle">Object</text><text x="170" y="153" fill="#dce8fb" font-size="12" text-anchor="middle">3 bends · concept</text>'}
 };
 function updateDiagram(){let d=diagrams[$("diagramType").value];$("diagramTitle").textContent=d.title;$("diagramDescription").textContent=d.desc;$("bigDiagram").innerHTML=d.svg}
-$("rise").addEventListener("input",updateOffset);$("angle").addEventListener("change",updateOffset);$("height").addEventListener("input",updateStub);$("takeup").addEventListener("input",updateStub);$("diagramType").addEventListener("change",updateDiagram);
+$("rise").addEventListener("input",updateOffset);$("angle").addEventListener("change",updateOffset);$("height").addEventListener("input",updateStub);$("takeup").addEventListener("input",updateStub);$("stubSize").addEventListener("change",()=>{syncConduitSize("stubSize");renderStepProcedure()});$("stepSize").addEventListener("change",()=>{syncConduitSize("stepSize");renderStepProcedure()});$("diagramType").addEventListener("change",updateDiagram);
 document.querySelectorAll(".tab").forEach(b=>b.addEventListener("click",()=>{document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("active",x===b));document.querySelectorAll(".panel").forEach(p=>p.classList.toggle("hidden",p.id!==b.dataset.tab))}));
 const shareButton=$("shareApp");
 if(shareButton) shareButton.addEventListener("click",async()=>{
@@ -275,10 +279,13 @@ const stepProcedures={
  kick:{title:"Single kick bend",intro:"Create a change in direction to pass an obstruction or meet a fitting.",svg:'<path d="M20 130H120L205 58H320" fill="none" stroke="#ff8a18" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><path d="M120 130V145M205 58V145M120 140H205" stroke="#f5f6f8" stroke-width="1.5" stroke-dasharray="4 3"/><text x="163" y="158" fill="#f5f6f8" font-size="11" text-anchor="middle">Measured travel</text><path d="M135 127A24 24 0 0 1 150 110" fill="none" stroke="#b5bdc9" stroke-width="1.5"/><text x="154" y="105" fill="#b5bdc9" font-size="10">Angle</text>',steps:[["Locate the required change","Measure the rise or displacement and available straight length."],["Select the angle","Choose an angle that clears the obstruction and fits the run; check the bender's multiplier or instructions."],["Calculate travel and mark","Use the appropriate angle multiplier and mark reference for the measured rise. Confirm any shrink or end allowance."],["Align and bend","Orient the conduit to keep the bend in the intended plane, then bend to the selected angle."],["Check fit","Test against the actual route or fitting and verify clearance and alignment."]]},
  saddle:{title:"Three-bend saddle",intro:"A center bend and two outer bends lift conduit over an obstruction.",svg:'<path d="M18 132H78L112 68H228L262 132H322" fill="none" stroke="#ff8a18" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><rect x="137" y="86" width="66" height="35" rx="4" fill="none" stroke="#b5bdc9" stroke-width="2" stroke-dasharray="4 3"/><text x="170" y="106" fill="#b5bdc9" font-size="10" text-anchor="middle">Obstacle</text><path d="M78 143V155M112 80V155M228 80V155M262 143V155" stroke="#f5f6f8" stroke-width="1.3" stroke-dasharray="3 3"/><text x="170" y="167" fill="#f5f6f8" font-size="10" text-anchor="middle">Outer marks and center mark</text>',steps:[["Measure the obstacle","Measure the height and width to clear, including required clearance."],["Choose a saddle method","Confirm whether the task calls for a three-bend saddle and select angles per the bender's instructions."],["Find the center mark","Mark the center of the obstruction using the chosen reference point and planned bend geometry."],["Lay out outer marks","Calculate outer spacing using the correct angle multiplier and shrink guidance. Confirm all three marks before bending."],["Bend and inspect","Make the center and outer bends in the correct order and orientation per the bender's method. Verify the conduit clears and remains aligned."]]}
 };
+function sizeLabel(value){const labels={"1/2":"½-inch EMT","3/4":"¾-inch EMT","1":"1-inch EMT","1-1/4":"1¼-inch EMT","1-1/2":"1½-inch EMT","2":"2-inch EMT"};return labels[value]||value+" EMT"}
+function syncConduitSize(source){const val=$(source).value;["stubSize","stepSize"].forEach(id=>{if($(id)&&$(id).value!==val)$(id).value=val});if($("stepSizeNote"))$("stepSizeNote").textContent=`Walkthrough size: ${sizeLabel(val)}. Verify the bender is rated for this size and check its instructions.`;updateStub()}
 function renderStepProcedure(){
  const p=stepProcedures[$("stepType").value];if(!p)return;
+ const selectedSize=sizeLabel($("stepSize").value);
  $("stepKicker").textContent="FIELD WALKTHROUGH";
- $("stepHeading").textContent=p.title;$("stepIntro").textContent=p.intro;$("stepVisual").innerHTML=p.svg;
+ $("stepHeading").textContent=p.title;$("stepIntro").textContent=`${p.intro} Selected conduit: ${selectedSize}.`;$("stepVisual").innerHTML=p.svg;
  $("stepVisual").setAttribute("aria-label",p.title+" illustrative diagram");
  $("stepCards").innerHTML=p.steps.map((st,i)=>'<article class="stepCard"><div class="stepNum">'+(i+1)+'</div><div><h4>'+st[0]+'</h4><p>'+st[1]+'</p></div></article>').join("");
 }
