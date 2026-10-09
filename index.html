@@ -3,9 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#111827">
-<meta name="description" content="Free EMT bending helper with offset, stub-up, and bend diagrams.">
+<meta name="theme-color" content="#111318">
+<meta name="description" content="BendBuddy: a clean, free electrician helper with EMT calculators, diagrams, and field sheets.">
 <link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" type="image/svg+xml" href="./icon.svg">
 <title>BendBuddy — EMT Helper</title>
 <style>
 :root{--bg:#0b1020;--panel:#151d30;--text:#f4f7fb;--muted:#aebbd0;--accent:#f5b82e;--line:#34425d}
@@ -29,10 +30,35 @@ input,select{width:100%;background:#0d1526;color:var(--text);border:1px solid #3
 .fieldMini b{font-size:12px;color:#f5b82e}
 .fieldMini span{font-size:12px}
 
+
+:root{--bg:#0b0d11;--panel:#171b21;--text:#f5f6f8;--muted:#b5bdc9;--accent:#ff8a18;--line:#353d48}
+body{background:radial-gradient(ellipse at 15% -10%,#252b34 0%,transparent 42%),linear-gradient(160deg,#0b0d11,#11161d 55%,#090b0e)}
+.brandHeader{padding:20px 17px 18px;max-width:760px;margin:auto}
+.brandRow{display:flex;align-items:center;gap:13px}
+.brandIcon{width:70px;height:70px;border-radius:18px;box-shadow:0 8px 24px #0008;border:1px solid #4a5059}
+.brandHeader h1{margin:0;font-size:35px;letter-spacing:-1.3px;font-weight:900}
+.brandHeader h1 span{color:var(--accent)}
+.tagline{font-size:11px;letter-spacing:.19em;font-weight:800;color:#c5cbd3;margin-top:2px}
+.brandHeader>p{margin:15px 0 12px;color:#d2d7df;font-size:15px;max-width:580px}
+.trustPills{display:flex;gap:7px;flex-wrap:wrap}
+.trustPills span{font-size:11px;font-weight:750;border:1px solid #3b424d;background:#171c23;color:#dce1e8;padding:6px 9px;border-radius:999px}
+.card{background:linear-gradient(145deg,#1b2028,#14181e);border-color:#343b46;box-shadow:0 14px 30px #0003}
+.tab{background:#171b21;border-color:#353d48}
+.tab.active{background:var(--accent);border-color:var(--accent);color:#151515}
+button{transition:filter .15s ease,transform .15s ease}
+button:active{transform:scale(.98)}
+.result{border-color:#4a515c}
+.footer{border-top:1px solid #343b46;color:#aab2be}
+@media(max-width:390px){.brandIcon{width:58px;height:58px}.brandHeader h1{font-size:30px}.trustPills span{font-size:10px}}
+
 </style>
 </head>
 <body>
-<header><div class="eyebrow">Free field tool · PWA prototype</div><h1>⚡ BendBuddy</h1><p>EMT bending calculations and visual bend-mark guides. Add it to your iPhone Home Screen for app-like access.</p></header>
+<header class="brandHeader">
+<div class="brandRow"><img class="brandIcon" src="./icon.svg" alt="BendBuddy icon"><div><div class="eyebrow">BUILT FOR THE FIELD</div><h1>Bend<span>Buddy</span></h1><div class="tagline">ELECTRICIAN HELPER</div></div></div>
+<p>Fast EMT calculations, clear bend diagrams, and practical field references—right in your pocket.</p>
+<div class="trustPills"><span>⚡ Quick calculations</span><span>▧ Visual guides</span><span>✓ Free field reference</span></div>
+</header>
 <main>
 <div class="tabs">
 <button class="tab active" data-tab="offset">Offset</button><button class="tab" data-tab="stub">90° Stub</button><button class="tab" data-tab="diagrams">Diagrams</button><button class="tab" data-tab="guide">Guide</button><button class="tab" data-tab="field">Field Sheets</button>
