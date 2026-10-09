@@ -3,359 +3,140 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#111318">
-<meta name="description" content="BendBuddy: a clean, free electrician helper with EMT calculators, diagrams, and field sheets.">
-<link rel="manifest" href="./manifest.webmanifest">
-<link rel="icon" type="image/svg+xml" href="./icon.svg">
-<title>BendBuddy — EMT Helper</title>
+<meta name="theme-color" content="#10151d">
+<meta name="description" content="Electrician's Toolbox — field calculations and references">
+<title>Electrician's Toolbox</title>
 <style>
-:root{--bg:#0b1020;--panel:#151d30;--text:#f4f7fb;--muted:#aebbd0;--accent:#f5b82e;--line:#34425d}
-*{box-sizing:border-box}body{margin:0;background:linear-gradient(160deg,#0b1020,#101b2e 55%,#0a1222);color:var(--text);font:16px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
-header{padding:22px 17px 15px;max-width:760px;margin:auto}.eyebrow{color:var(--accent);font-size:12px;letter-spacing:.15em;font-weight:800;text-transform:uppercase}h1{margin:5px 0;font-size:32px;line-height:1.08}header p{margin:8px 0 0;color:var(--muted)}
-main{max-width:760px;margin:auto;padding:0 13px 34px}.tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px;margin-bottom:13px}.tab{border:1px solid var(--line);background:var(--panel);color:var(--muted);padding:11px 2px;border-radius:11px;font-weight:750;font-size:11px;line-height:1.2}.tab.active{background:var(--accent);border-color:var(--accent);color:#151515}
-.card{background:rgba(21,29,48,.96);border:1px solid var(--line);border-radius:17px;padding:16px;margin-bottom:13px;box-shadow:0 12px 28px #0002}h2{font-size:20px;margin:0 0 10px}label{display:block;font-weight:700;font-size:14px;margin:12px 0 6px;color:#dbe4f3}
-input,select{width:100%;background:#0d1526;color:var(--text);border:1px solid #3b4b68;border-radius:11px;padding:12px;font:inherit;min-height:46px}.row{display:grid;grid-template-columns:1fr 1fr;gap:9px}.result{background:#0d1526;border:1px solid #354562;border-radius:13px;padding:13px;margin-top:13px}.result small{display:block;color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.08em;font-weight:800}.big{font-size:28px;font-weight:850;color:var(--accent);margin-top:3px}.results2{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:9px}.mini{background:#0d1526;border:1px solid #354562;border-radius:12px;padding:11px}.mini strong{display:block;color:var(--accent);font-size:20px}.note{color:var(--muted);font-size:13px}.pill{display:inline-block;background:#24344b;color:#dce8fb;border-radius:999px;padding:4px 8px;font-size:12px;font-weight:700}ul{padding-left:20px;color:#dbe4f3}li{margin:7px 0}.hidden{display:none}.primary{width:100%;margin-top:12px;border:0;border-radius:12px;background:var(--accent);color:#191919;font-size:15px;font-weight:850;padding:13px}.diagram{width:100%;height:auto;display:block;background:#0d1526;border:1px solid #354562;border-radius:13px;margin-top:12px}.footer{color:#8f9eb6;font-size:12px;text-align:center;padding:15px 5px}.status{font-size:12px;color:#aebbd0;margin-top:8px}
-@media(min-width:520px){.tabs{grid-template-columns:repeat(6,minmax(0,1fr));gap:8px}.tab{font-size:14px;padding:11px 5px}}
-
-.fieldFilters{display:flex;flex-wrap:wrap;gap:7px;margin:12px 0}
-.filter{border:1px solid var(--line);border-radius:999px;padding:8px 12px;background:#0d1526;color:var(--muted);font-weight:750}
-.filter.active{background:var(--accent);color:#151515;border-color:var(--accent)}
-.fieldSheet{background:#0d1526;border:1px solid #354562;border-radius:13px;padding:14px;margin-top:10px}
-.fieldSheet h3{font-size:17px;margin:0 0 8px;color:#f5b82e}
-.fieldSheet p{margin:8px 0;color:#dbe4f3}
-.fieldSheet ul,.fieldSheet ol{margin:8px 0;padding-left:21px}
-.fieldGrid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}
-.fieldMini{background:#151d30;border:1px solid #34425d;border-radius:9px;padding:8px 4px;text-align:center}
-.fieldMini b,.fieldMini span{display:block}
-.fieldMini b{font-size:12px;color:#f5b82e}
-.fieldMini span{font-size:12px}
-
-
-:root{--bg:#0b0d11;--panel:#171b21;--text:#f5f6f8;--muted:#b5bdc9;--accent:#ff8a18;--line:#353d48}
-body{background:radial-gradient(ellipse at 15% -10%,#252b34 0%,transparent 42%),linear-gradient(160deg,#0b0d11,#11161d 55%,#090b0e)}
-.brandHeader{padding:20px 17px 18px;max-width:760px;margin:auto}
-.brandRow{display:flex;align-items:center;gap:13px}
-.brandIcon{width:70px;height:70px;border-radius:18px;box-shadow:0 8px 24px #0008;border:1px solid #4a5059}
-.brandHeader h1{margin:0;font-size:35px;letter-spacing:-1.3px;font-weight:900}
-.brandHeader h1 span{color:var(--accent)}
-.tagline{font-size:11px;letter-spacing:.19em;font-weight:800;color:#c5cbd3;margin-top:2px}
-.brandHeader>p{margin:15px 0 12px;color:#d2d7df;font-size:15px;max-width:580px}
-.trustPills{display:flex;gap:7px;flex-wrap:wrap}
-.trustPills span{font-size:11px;font-weight:750;border:1px solid #3b424d;background:#171c23;color:#dce1e8;padding:6px 9px;border-radius:999px}
-.card{background:linear-gradient(145deg,#1b2028,#14181e);border-color:#343b46;box-shadow:0 14px 30px #0003}
-.tab{background:#171b21;border-color:#353d48}
-.tab.active{background:var(--accent);border-color:var(--accent);color:#151515}
-button{transition:filter .15s ease,transform .15s ease}
-button:active{transform:scale(.98)}
-.result{border-color:#4a515c}
-.footer{border-top:1px solid #343b46;color:#aab2be}
-@media(max-width:390px){.brandIcon{width:58px;height:58px}.brandHeader h1{font-size:30px}.trustPills span{font-size:10px}}
-
-
-.stepHero{background:linear-gradient(145deg,#222832,#12161c);border:1px solid #454e5a;border-radius:16px;padding:15px;margin-top:12px}
-.stepKicker{color:var(--accent);font-size:11px;letter-spacing:.15em;font-weight:900}
-.stepHero h3{font-size:22px;margin:5px 0}
-.stepHero p{color:#c6ced8;margin:0 0 6px}
-#stepVisual,#markAlignmentVisual{display:block;width:100%;height:auto;max-height:250px;margin:8px 0}
-.stepLegend{display:flex;gap:15px;flex-wrap:wrap;color:#c6ced8;font-size:11px}
-.stepLegend span{display:flex;align-items:center;gap:6px}
-.legendPipe{width:22px;height:5px;background:#ff8a18;border-radius:9px;display:inline-block}
-.legendMark{width:10px;height:10px;border:2px solid #f5f6f8;display:inline-block;border-radius:2px}
-.stepCards{display:grid;gap:10px;margin-top:13px}
-.stepCard{display:grid;grid-template-columns:42px 1fr;gap:11px;padding:13px;background:#11161d;border:1px solid #39424e;border-radius:13px}
-.stepNum{height:38px;width:38px;border-radius:12px;background:var(--accent);color:#151515;font-size:17px;font-weight:900;display:flex;align-items:center;justify-content:center}
-.stepCard h4{margin:0 0 4px;font-size:15px}
-.stepCard p{margin:0;color:#c5ced9;font-size:13px}
-.stepNotice{margin-top:13px;border-left:4px solid var(--accent);padding:11px 12px;background:#211a13;border-radius:0 10px 10px 0;font-size:13px;color:#f2e4d3}
-.verifyList{list-style:none;padding-left:0}
-.verifyList li{padding:6px 0;border-bottom:1px solid #303945;font-size:14px}
-
+:root{color-scheme:dark;--bg:#0b1017;--panel:#141d28;--panel2:#1a2634;--line:#2b3a4b;--text:#f3f6fa;--muted:#a8b6c6;--accent:#ffbd59;--good:#69d6a5;--warn:#ffd080}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:16px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+button,input,select{font:inherit}button{cursor:pointer}
+header{padding:calc(18px + env(safe-area-inset-top)) 18px 16px;background:linear-gradient(145deg,#182534,#10151d);border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:center;gap:12px}.logo{width:44px;height:44px;border-radius:13px;background:var(--accent);color:#171b21;display:grid;place-items:center;font-weight:900;font-size:21px}
+h1{font-size:21px;margin:0;letter-spacing:-.4px}header p{margin:3px 0 0;color:var(--muted);font-size:13px}
+main{max-width:850px;margin:auto;padding:18px 15px 105px}
+.eyebrow{font-size:12px;text-transform:uppercase;letter-spacing:1.4px;color:var(--accent);font-weight:800;margin:5px 0 8px}
+h2{font-size:24px;letter-spacing:-.5px;margin:0 0 7px}h3{font-size:17px;margin:0 0 8px}
+.intro{color:var(--muted);margin:0 0 18px}
+.notice{background:#292315;border:1px solid #5a4827;color:#ffe3ac;border-radius:12px;padding:12px 13px;font-size:13px;margin:15px 0 20px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}
+.tile{min-height:116px;text-align:left;background:var(--panel);border:1px solid var(--line);border-radius:15px;padding:14px;color:var(--text);display:flex;flex-direction:column;gap:7px}
+.tile:active,.tile:hover{border-color:var(--accent);background:var(--panel2)}
+.tile .ico{font-size:24px}.tile strong{font-size:15px}.tile span:last-child{color:var(--muted);font-size:12px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:15px;padding:16px;margin:12px 0}
+label{display:block;color:var(--muted);font-size:13px;margin:12px 0 5px}
+input,select{width:100%;background:#0c121a;color:var(--text);border:1px solid #354658;border-radius:10px;padding:12px;min-height:46px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.btn{border:0;border-radius:10px;background:var(--accent);color:#1c2026;font-weight:800;padding:12px 15px;min-height:46px;width:100%;margin-top:14px}
+.btn.secondary{background:var(--panel2);color:var(--text);border:1px solid var(--line)}
+.result{border:1px solid #426b5a;background:#12261f;border-radius:12px;padding:13px;margin-top:14px}
+.result b{color:var(--good);font-size:20px}.result small{display:block;color:#b8d8ca;margin-top:4px}
+.muted{color:var(--muted);font-size:13px}.hidden{display:none!important}
+.back{background:transparent;border:1px solid var(--line);color:var(--text);padding:8px 12px;border-radius:9px;margin-bottom:14px}
+.listrow{display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--line);padding:13px 0}.listrow:last-child{border-bottom:0}.listrow .ico{font-size:22px}
+.bottom{position:fixed;bottom:0;left:0;right:0;padding:9px 12px calc(9px + env(safe-area-inset-bottom));background:#101720ee;backdrop-filter:blur(12px);border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(4,1fr);gap:5px;z-index:4}
+.bottom button{border:0;border-radius:10px;background:transparent;color:var(--muted);font-size:11px;padding:7px 2px;display:flex;flex-direction:column;align-items:center;gap:3px}.bottom button span{font-size:19px}.bottom button.active{background:var(--panel2);color:var(--accent)}
+ul{padding-left:20px}.section-title{display:flex;justify-content:space-between;align-items:center;gap:10px}
+@media(min-width:620px){.grid{grid-template-columns:repeat(3,minmax(0,1fr))}main{padding-top:25px}.tile{min-height:130px}}
 </style>
 </head>
 <body>
-<header class="brandHeader">
-<div class="brandRow"><img class="brandIcon" src="./icon.svg" alt="BendBuddy icon"><div><div class="eyebrow">BUILT FOR THE FIELD</div><h1>Bend<span>Buddy</span></h1><div class="tagline">ELECTRICIAN HELPER</div></div></div>
-<p>Fast EMT calculations, clear bend diagrams, and practical field references—right in your pocket.</p>
-<div class="trustPills"><span>⚡ Quick calculations</span><span>▧ Visual guides</span><span>✓ Free field reference</span></div>
+<header>
+ <div class="brand"><div class="logo">ET</div><div><h1>Electrician's Toolbox</h1><p>Field calculations · references · jobsite tools</p></div></div>
 </header>
 <main>
-<div class="tabs">
-<button class="tab active" data-tab="offset">Offset</button><button class="tab" data-tab="stub">90° Stub</button><button class="tab" data-tab="diagrams">Diagrams</button><button class="tab" data-tab="guide">Guide</button><button class="tab" data-tab="field">Field Sheets</button><button class="tab" data-tab="pro">Roadmap</button><button class="tab" data-tab="steps">Bend Steps</button>
-</div>
-<section id="offset" class="panel"><div class="card">
-<h2>Offset calculator</h2><p class="note">Calculate the spacing between two bends from the rise and selected bend angle.</p>
-<label for="rise">Offset height / rise (inches)</label><input id="rise" type="number" inputmode="decimal" min="0" step="0.125" value="2">
-<label for="angle">Bend angle</label><select id="angle"><option value="10">10° — gradual</option><option value="22.5">22.5° — common</option><option value="30" selected>30° — common</option><option value="45">45° — steep</option><option value="60">60° — very steep</option></select>
-<div class="result"><small>Distance between bend marks</small><div class="big" id="spacing">4.00 in</div><div class="note" id="spacingNote">Rise × angle multiplier</div></div>
-<div class="results2"><div class="mini"><span class="note">Approx. shrink</span><strong id="shrink">0.50 in</strong></div><div class="mini"><span class="note">Multiplier</span><strong id="multiplier">2×</strong></div></div>
-<svg class="diagram" id="offsetDiagram" viewBox="0 0 340 150" role="img" aria-label="Offset bend diagram"><path d="M20 105 L105 105 L215 48 L320 48" fill="none" stroke="#f5b82e" stroke-width="6" stroke-linecap="round"/><path d="M105 124 L215 124" stroke="#dce8fb" stroke-width="1.5" stroke-dasharray="4 4"/><path d="M105 118 L105 130 M215 118 L215 130" stroke="#dce8fb" stroke-width="1.5"/><text x="160" y="143" fill="#dce8fb" font-size="11" text-anchor="middle">Bend spacing</text><text x="20" y="88" fill="#aebbd0" font-size="11">1st mark</text><text x="215" y="32" fill="#aebbd0" font-size="11">2nd bend</text></svg>
-<p class="note">Diagram is illustrative and not to scale. Rotate the conduit 180° between bends to keep the offset in the same plane.</p>
-</div></section>
-<section id="stub" class="panel hidden"><div class="card">
-<h2>90° stub-up calculator</h2><p class="note">Choose the conduit size, then enter the take-up verified for your exact bender.</p>
-<label for="stubSize">Conduit size</label><select id="stubSize" class="sizeSelect"><option value="1/2">½-inch EMT</option><option value="3/4" selected>¾-inch EMT</option><option value="1">1-inch EMT</option><option value="1-1/4">1¼-inch EMT</option><option value="1-1/2">1½-inch EMT</option><option value="2">2-inch EMT</option></select>
-<label for="height">Desired stub height (inches)</label><input id="height" type="number" inputmode="decimal" min="0" step="0.125" value="24">
-<label for="takeup">Verified bender take-up (inches)</label><input id="takeup" type="number" inputmode="decimal" min="0" step="0.125" placeholder="Enter verified value">
-<div class="result"><small>Mark from conduit end</small><div class="big" id="stubMark">19.00 in</div><div class="note" id="stubNote">24.00 − 5.00 take-up</div></div>
-<svg class="diagram" viewBox="0 0 340 145" role="img" aria-label="90 degree stub up diagram"><path d="M45 118 L45 42 Q45 25 62 25 L300 25" fill="none" stroke="#f5b82e" stroke-width="6" stroke-linecap="round"/><path d="M73 118 L73 25" stroke="#dce8fb" stroke-width="1.5" stroke-dasharray="4 4"/><path d="M66 118 L80 118 M66 25 L80 25" stroke="#dce8fb" stroke-width="1.5"/><text x="83" y="74" fill="#dce8fb" font-size="11">Stub height</text><text x="95" y="137" fill="#aebbd0" font-size="11">Conduit end / mark depends on take-up</text></svg>
-<p class="note" id="takeupReminder">Selected: ¾-inch EMT. Take-up varies by bender model and conduit size. Enter a value only after checking the marking or manufacturer instructions for your exact bender.</p>
-</div></section>
-<section id="diagrams" class="panel hidden"><div class="card">
-<h2>Visual bend-mark guide</h2><span class="pill">Illustrative diagrams</span>
-<label for="diagramType">Choose a bend</label><select id="diagramType"><option value="offset">Two-bend offset</option><option value="stub">90° stub-up</option><option value="kick">Single kick bend</option><option value="saddle">Three-bend saddle concept</option></select>
-<div id="diagramTitle" style="font-weight:800;margin-top:14px">Two-bend offset</div>
-<svg id="bigDiagram" class="diagram" viewBox="0 0 340 180" role="img" aria-label="Selected conduit bending diagram"></svg>
-<p class="note" id="diagramDescription">Two bends in opposite directions create an offset around an obstruction.</p>
-<div class="result"><small>Current offset marks</small><div class="big" id="diagramSpacing">4.00 in apart</div><div class="note">Updates from the offset calculator tab.</div></div>
-</div></section>
-<section id="guide" class="panel hidden"><div class="card">
-<h2>Quick field guide</h2><span class="pill">Common EMT rules of thumb</span>
-<ul><li><b>Offset:</b> spacing = rise × multiplier.</li><li><b>10°:</b> multiplier 5.76; approximate shrink 1/16 in per inch of rise.</li><li><b>22.5°:</b> multiplier 2.6; approximate shrink 3/16 in per inch of rise.</li><li><b>30°:</b> multiplier 2; approximate shrink 1/4 in per inch of rise.</li><li><b>45°:</b> multiplier 1.4; approximate shrink 3/8 in per inch of rise.</li><li><b>60°:</b> multiplier 1.155; approximate shrink 1/2 in per inch of rise.</li><li><b>90° stub:</b> mark = desired stub height − bender take-up.</li></ul>
-<p class="note">These are approximate field formulas. Follow the bender's markings, plans, applicable code, and employer procedures. Verify before cutting or bending.</p>
-</div><div class="card"><h2>Planned upgrades</h2><ul><li>Box offsets and kick-bend calculator</li><li>Fraction-friendly measurements</li><li>Saved bender take-up values</li><li>More illustrated bend sequences</li></ul></div></section>
-
-<section id="field" class="panel hidden">
-<div class="card">
-<h2>⚡ Electrician field sheets</h2>
-<p class="note">Fast reminders for common field tasks. Search by topic, or tap a category. These are reference notes—not a substitute for the adopted electrical code, approved plans, manufacturer instructions, or your employer's procedures.</p>
-<label for="fieldSearch">Search field sheets</label>
-<input id="fieldSearch" type="search" placeholder="Try: box fill, wire, conduit, GFCI…" autocomplete="off">
-<div class="fieldFilters" id="fieldFilters">
-<button class="filter active" data-filter="all">All</button>
-<button class="filter" data-filter="conduit">Conduit</button>
-<button class="filter" data-filter="wiring">Wiring</button>
-<button class="filter" data-filter="safety">Safety</button>
-<button class="filter" data-filter="troubleshoot">Troubleshooting</button>
-</div>
-<div id="fieldCards">
-<article class="fieldSheet" data-category="conduit" data-search="emt offset multiplier spacing shrink rise angle bend">
-<h3>EMT offset quick reference</h3>
-<p class="note">Spacing ≈ rise × multiplier. Approximate multipliers:</p>
-<div class="fieldGrid">
-<div class="fieldMini"><b>10°</b><span>5.76×</span></div><div class="fieldMini"><b>22.5°</b><span>2.6×</span></div><div class="fieldMini"><b>30°</b><span>2×</span></div><div class="fieldMini"><b>45°</b><span>1.4×</span></div><div class="fieldMini"><b>60°</b><span>1.155×</span></div>
-</div>
-<p>Example: a 2-inch rise at 30° gives about 4 inches between marks.</p>
-<p class="note">Shrink depends on bend angle and rise; confirm the appropriate multiplier and bender guidance.</p>
-</article>
-<article class="fieldSheet" data-category="conduit" data-search="90 stub up take up deduct mark bender">
-<h3>90° stub-up reminder</h3>
-<ol><li>Choose the required stub height.</li><li>Find the take-up stamped on the correct bender or in its instructions.</li><li>Mark the conduit: desired height − take-up.</li><li>Align the mark with the bender's arrow and bend using the bender instructions.</li></ol>
-<p class="note">Take-up varies by bender and conduit size. Do not rely on a universal take-up number.</p>
-</article>
-<article class="fieldSheet" data-category="conduit" data-search="conduit fill raceway fill conductors code">
-<h3>Conduit fill: check before pulling</h3>
-<ul><li>Count all conductors/cables and identify their insulation and sizes.</li><li>Use the adopted code's raceway-fill tables and rules for the exact raceway type and conductor combination.</li><li>Account for equipment grounding conductors, cable assemblies, nipples, and other applicable rules.</li><li>Check conductor ampacity adjustment and terminal temperature limits separately from fill.</li></ul>
-<p class="note">Do not guess fill from appearance. Use the applicable code tables or an approved calculator.</p>
-</article>
-<article class="fieldSheet" data-category="wiring" data-search="wire ampacity wire size breaker load copper aluminum voltage drop">
-<h3>Wire size & breaker check</h3>
-<ul><li>Confirm load, continuous-load requirements, conductor material, insulation rating, ambient temperature, and number of current-carrying conductors.</li><li>Verify overcurrent protection, terminal temperature ratings, and any equipment-specific instructions.</li><li>Check voltage drop for long runs where applicable.</li><li>Never choose wire size from breaker size alone.</li></ul>
-<p class="note">Use the locally adopted electrical code and approved design; this sheet intentionally does not prescribe a universal wire size.</p>
-</article>
-<article class="fieldSheet" data-category="wiring" data-search="box fill electrical box volume conductor count devices clamps grounds">
-<h3>Box fill: count carefully</h3>
-<ul><li>Identify the box's marked volume or listed volume.</li><li>Count insulated conductors, device yokes, internal clamps, and equipment grounding conductors using the applicable code rules.</li><li>Use the correct volume allowance for the conductor size.</li><li>Confirm the box is listed for the installation and has enough room for safe terminations.</li></ul>
-<p class="note">Box-fill calculations are code-specific. Use the current adopted rules and listed box volume.</p>
-</article>
-<article class="fieldSheet" data-category="safety" data-search="lockout tagout verify absence voltage tester PPE arc flash energized safety">
-<h3>Before working on electrical equipment</h3>
-<ol><li>Identify all sources, including backfeeds, stored energy, and alternate supplies.</li><li>Follow the site's lockout/tagout procedure and apply your personal lock as required.</li><li>Use a properly rated tester and verify it on a known live source, test for absence of voltage, then re-verify the tester.</li><li>Use the required PPE and boundaries based on the risk assessment.</li></ol>
-<p class="note"><b>Never assume equipment is de-energized.</b> Only qualified persons should perform electrical work, following applicable rules and training.</p>
-</article>
-<article class="fieldSheet" data-category="safety" data-search="ladder overhead power lines heat hydration PPE jobsite">
-<h3>Jobsite quick safety scan</h3>
-<ul><li>Look for overhead lines, wet conditions, damaged cords, sharp edges, and trip hazards.</li><li>Inspect tools, leads, ladders, and PPE before use.</li><li>Keep ladders and long conduit away from power lines; follow required clearances.</li><li>In hot conditions, take breaks, cool down, and follow the site's hydration and heat-safety plan.</li></ul>
-<p class="note">Stop and ask the supervisor when the hazard or safe procedure is unclear.</p>
-</article>
-<article class="fieldSheet" data-category="troubleshoot" data-search="troubleshooting dead circuit breaker trip receptacle voltage meter diagnose">
-<h3>Dead circuit: safe first checks</h3>
-<ul><li>Ask what changed and identify the affected equipment and circuit.</li><li>Check drawings, labels, and upstream devices without opening energized equipment unless qualified and authorized.</li><li>Use a properly rated meter and safe work procedures to verify conditions.</li><li>Check for tripped protective devices only when safe; investigate why a breaker or GFCI tripped before resetting repeatedly.</li></ul>
-<p class="note">Do not bypass protective devices or repeatedly reset a device that trips again.</p>
-</article>
-<article class="fieldSheet" data-category="troubleshoot" data-search="GFCI trips ground fault moisture load reset troubleshooting">
-<h3>GFCI keeps tripping</h3>
-<ul><li>Unplug connected loads if safe and permitted.</li><li>Look for moisture, damaged cords, or equipment faults.</li><li>Do not defeat the GFCI or replace it with a non-protective device.</li><li>If it trips with loads disconnected or will not reset, stop and investigate per approved procedures.</li></ul>
-</article>
-<article class="fieldSheet" data-category="conduit" data-search="EMT support spacing straps fittings connectors reaming sharp edges">
-<h3>EMT installation reminders</h3>
-<ul><li>Use fittings listed for the raceway and environment.</li><li>Ream cut ends and protect conductors from sharp edges.</li><li>Support and secure raceway according to the adopted code and installation conditions.</li><li>Check bonding/grounding continuity and fitting tightness as required.</li></ul>
-<p class="note">Exact support spacing and exceptions depend on the adopted code and installation.</p>
-</article>
-</div>
-<p id="noFieldResults" class="note hidden">No sheets match that search. Try a shorter keyword.</p>
-</div>
-<div class="card">
-<h2>Save a useful note</h2>
-<p class="note">This version does not store personal notes. Use the Share button in Safari or your preferred notes app if you want to keep a job-specific reminder.</p>
-</div>
-</section>
-
-
-<section id="pro" class="panel hidden">
-<div class="card">
-<h2>🚀 BendBuddy roadmap</h2>
-<p class="note">BendBuddy is free while we're proving which tools electricians actually use. No paid plan or payment collection is active in this version.</p>
-<div class="fieldSheet">
-<h3>Free core — stays useful</h3>
-<ul><li>EMT offset and stub-up helpers</li><li>Bend diagrams and quick guides</li><li>Searchable electrician field sheets</li><li>Basic access on mobile</li></ul>
-</div>
-<div class="fieldSheet">
-<h3>Potential Pro features</h3>
-<ul><li>More bend types and step-by-step visual mark guides</li><li>Saved favorite references and personal bender settings</li><li>Printable job cheat sheets and measurement notes</li><li>Offline-friendly reference library</li></ul>
-<p class="note">These are ideas, not promises. We'll only build paid features if electricians say they would genuinely save time.</p>
-</div>
-<div class="fieldSheet">
-<h3>How BendBuddy could earn</h3>
-<ol><li><b>Validate first:</b> share the free app with 10–20 electricians or apprentices and ask what they'd use weekly.</li><li><b>Build trust:</b> fix issues and improve the most requested tools.</li><li><b>Test one paid add-on:</b> consider a small one-time downloadable pack or optional Pro upgrade only after people ask for it.</li><li><b>Keep costs low:</b> continue hosting the static app free; only add paid services if the expected income justifies their fees and complexity.</li></ol>
-</div>
-<p class="note">Electrical references are helpers only. Users must verify calculations and procedures against the applicable code, approved plans, and manufacturer instructions.</p>
-</div>
-<div class="card">
-<h2>Share BendBuddy</h2>
-<p>Send the free app to an electrician and ask which feature would save them the most time.</p>
-<button id="shareApp" type="button">Share BendBuddy</button>
-<p class="note" id="shareStatus" aria-live="polite">If sharing isn't supported, copy the app link from your browser's address bar.</p>
-</div>
-</section>
-
-
-<section id="steps" class="panel hidden">
-<div class="card">
-<h2>Professional bend walkthroughs</h2>
-<p class="note">Choose a bend to see the workflow, measurement reminders, and a simple visual sequence. Drawings are illustrative—not scale templates.</p>
-<label for="stepSize">Conduit size</label>
-<select id="stepSize" class="sizeSelect"><option value="1/2">½-inch EMT</option><option value="3/4" selected>¾-inch EMT</option><option value="1">1-inch EMT</option><option value="1-1/4">1¼-inch EMT</option><option value="1-1/2">1½-inch EMT</option><option value="2">2-inch EMT</option></select>
-<p class="note" id="stepSizeNote">Walkthrough size: ¾-inch EMT. Verify the bender is rated for this size.</p>
-<label for="stepType">Bend procedure</label>
-<select id="stepType">
-<option value="offset">Two-bend offset</option>
-<option value="stub">90° stub-up</option>
-<option value="kick">Single kick</option>
-<option value="saddle">Three-bend saddle</option>
-</select>
-<div id="offsetLayoutPanel" class="result">
-<h4 style="margin:0 0 6px">Offset mark measurements</h4>
-<p class="note">Enter how far the first bend mark should be from the conduit end, based on your job layout. BendBuddy calculates the second mark from the rise and selected angle.</p>
-<label for="offsetStart">Conduit end to first bend mark (inches)</label>
-<input id="offsetStart" type="number" inputmode="decimal" min="0" step="0.125" value="12">
-<div class="results2">
-<div class="mini"><span class="note">End → Mark 1</span><strong id="offsetMark1">12.00 in</strong></div>
-<div class="mini"><span class="note">Mark 1 → Mark 2</span><strong id="offsetMarkGap">4.00 in</strong></div>
-<div class="mini"><span class="note">End → Mark 2</span><strong id="offsetMark2">16.00 in</strong></div>
-<div class="mini"><span class="note">Bend alignment</span><strong style="font-size:15px">Arrow → each mark</strong></div>
-</div>
-<p class="note">These are layout distances along the straight conduit, not distances measured along a bent section. Confirm the intended first-mark location from the obstruction, fittings, and plans. Diagram is illustrative and not to scale.</p>
-</div>
-<div class="stepHero">
-<div class="stepKicker" id="stepKicker">PROCEDURE 01</div>
-<h3 id="stepHeading">Two-bend offset</h3>
-<p id="stepIntro">Move conduit around an obstruction while returning to the original path.</p>
-<svg id="stepVisual" viewBox="0 0 340 170" role="img" aria-label="Step-by-step conduit bend illustration"></svg>
-<div class="stepLegend"><span><i class="legendPipe"></i> Conduit path</span><span><i class="legendMark"></i> Measurement mark</span></div>
-<h4 style="margin:16px 0 4px">Where to put the mark and align it</h4>
-<p class="note">The red line shows the pencil mark on the conduit. The reference on the bender is shown symbolically; use the arrow/notch or reference specified by your exact bender and bend method.</p>
-<svg id="markAlignmentVisual" viewBox="0 0 340 150" role="img" aria-label="Illustration of conduit mark and bender reference alignment"></svg>
-</div>
-<div id="stepCards" class="stepCards"></div>
-<div class="stepNotice"><b>Before you bend:</b> Confirm the actual bender, conduit size, required clearance, mark reference, and bend direction. Check the finished measurement before cutting or installing.</div>
-</div>
-<div class="card">
-<h2>Field verification checklist</h2>
-<ul class="verifyList"><li>☐ Confirm the obstruction and required clearance.</li><li>☐ Measure from a consistent reference point.</li><li>☐ Verify angle, multiplier, and take-up against the actual bender.</li><li>☐ Check the bend plane and orientation before making the bend.</li><li>☐ Inspect the finished conduit for kinks, flattening, and fit.</li></ul>
-<p class="note">Follow the adopted electrical code, approved plans, manufacturer instructions, and employer procedures. If a calculation or marking convention is unclear, verify it before bending.</p>
-</div>
-</section>
-
-<div class="footer">BendBuddy prototype · Free to use · Always verify calculations and manufacturer instructions.<div class="status" id="installStatus">Tip: use Safari's Share menu → Add to Home Screen after hosting securely.</div></div>
+ <section id="home">
+  <div class="eyebrow">Field toolkit</div><h2>What do you need to work out?</h2>
+  <p class="intro">Fast, practical tools for the electrical jobsite. More modules will be added and verified in stages.</p>
+  <div class="grid">
+   <button class="tile" data-page="conduit"><span class="ico">〰️</span><strong>Conduit Bending</strong><span>Offsets, stubs, kicks & saddles</span></button>
+   <button class="tile" data-page="ohms"><span class="ico">⚡</span><strong>Ohm's Law</strong><span>Voltage, current, resistance & power</span></button>
+   <button class="tile" data-page="voltage"><span class="ico">📉</span><strong>Voltage Drop</strong><span>Single- and three-phase estimate</span></button>
+   <button class="tile" data-page="fill"><span class="ico">🧰</span><strong>Conduit Fill</strong><span>Raceway and conductor planning</span></button>
+   <button class="tile" data-page="code"><span class="ico">📘</span><strong>NEC Reference</strong><span>2026 edition planning & code topics</span></button>
+   <button class="tile" data-page="quick"><span class="ico">📋</span><strong>Quick References</strong><span>Units, formulas & field notes</span></button>
+  </div>
+  <div class="notice"><b>Code & safety note:</b> This foundation is not an authority having jurisdiction (AHJ) determination. Confirm calculations, equipment instructions, adopted code edition, local amendments, and job conditions before installation. Never work energized unless specifically qualified and authorized under applicable procedures.</div>
+  <div class="card"><h3>Build status</h3><p class="muted">Foundation preview · US customary units · Target reference edition: 2026 NEC. This is an early build; not all tools are implemented yet.</p></div>
+ </section>
+ <section id="conduit" class="hidden">
+  <button class="back" data-home>← Home</button><div class="eyebrow">Conduit tools</div><h2>Conduit Bending</h2><p class="intro">Choose a bend type. Marking instructions will be added with bender-specific references.</p>
+  <div class="card"><label for="bendtype">Bend type</label><select id="bendtype"><option value="offset">Two-bend offset</option><option value="stub">90° stub-up</option><option value="kick">Kick</option><option value="saddle">Saddle</option><option value="rolling">Rolling offset</option></select><div class="notice">Bender arrow, star, take-up, and shoe geometry vary by tool and bend type. This preview intentionally avoids inventing universal bender marks.</div><p class="muted">The first verified bending module will calculate geometry, mark spacing, and bend sequence separately, with your bender's reference details identified.</p></div>
+ </section>
+ <section id="ohms" class="hidden">
+  <button class="back" data-home>← Home</button><div class="eyebrow">Electrical calculations</div><h2>Ohm's Law & Power</h2><p class="intro">Enter any two values to solve for voltage, current, resistance, and DC power where mathematically possible.</p>
+  <div class="card">
+   <div class="row"><div><label for="v">Voltage (V)</label><input id="v" type="number" min="0" step="any" placeholder="e.g. 120"></div><div><label for="i">Current (A)</label><input id="i" type="number" min="0" step="any" placeholder="e.g. 10"></div></div>
+   <div class="row"><div><label for="r">Resistance (Ω)</label><input id="r" type="number" min="0" step="any" placeholder="e.g. 12"></div><div><label for="p">Power (W)</label><input id="p" type="number" min="0" step="any" placeholder="e.g. 1200"></div></div>
+   <button class="btn" id="solveOhm">Calculate</button><button class="btn secondary" id="clearOhm">Clear fields</button><div id="ohmResult" aria-live="polite"></div>
+   <p class="muted">For DC resistive circuits. AC calculations involving impedance, power factor, harmonics, or non-linear loads require additional information.</p>
+  </div>
+ </section>
+ <section id="voltage" class="hidden">
+  <button class="back" data-home>← Home</button><div class="eyebrow">Electrical calculations</div><h2>Voltage Drop</h2><p class="intro">A preliminary copper-conductor estimate using a simplified resistance model.</p>
+  <div class="card">
+   <label for="phase">Circuit type</label><select id="phase"><option value="2">Single-phase / DC two-wire loop</option><option value="1.732">Three-phase</option></select>
+   <div class="row"><div><label for="amps">Load current (A)</label><input id="amps" type="number" min="0" step="any" placeholder="e.g. 20"></div><div><label for="feet">One-way length (ft)</label><input id="feet" type="number" min="0" step="any" placeholder="e.g. 100"></div></div>
+   <label for="wire">Copper conductor size</label><select id="wire"><option value="14">14 AWG</option><option value="12">12 AWG</option><option value="10">10 AWG</option><option value="8">8 AWG</option><option value="6">6 AWG</option><option value="4">4 AWG</option><option value="3">3 AWG</option><option value="2">2 AWG</option><option value="1">1 AWG</option><option value="0">1/0 AWG</option><option value="-1">2/0 AWG</option><option value="-2">3/0 AWG</option><option value="-3">4/0 AWG</option><option value="250">250 kcmil</option><option value="300">300 kcmil</option><option value="350">350 kcmil</option><option value="500">500 kcmil</option></select>
+   <div class="row"><div><label for="sysv">System voltage (V)</label><input id="sysv" type="number" min="1" step="any" placeholder="e.g. 120"></div><div><label for="temp">Copper resistance factor</label><select id="temp"><option value="12.9">Approx. 20°C</option><option value="14.0">Approx. warmer conductor estimate</option></select></div></div>
+   <button class="btn" id="solveDrop">Estimate drop</button><div id="dropResult" aria-live="polite"></div>
+   <p class="muted">This is a rough estimate, not final conductor sizing. Actual AC impedance, conductor temperature, terminals, load characteristics, and applicable code requirements can change the result. Verify with approved tables and project conditions.</p>
+  </div>
+ </section>
+ <section id="fill" class="hidden">
+  <button class="back" data-home>← Home</button><div class="eyebrow">Raceway planning</div><h2>Conduit Fill</h2><p class="intro">The fill module is planned here; a compliant calculator needs verified raceway internal areas and conductor areas for the selected types and sizes.</p>
+  <div class="card"><h3>Planned inputs</h3><ul><li>Raceway type and trade size</li><li>Conductor type, insulation, and gauge</li><li>Number of each conductor</li><li>Applicable fill percentage and NEC table reference</li></ul><div class="notice">No fill result is shown yet because the reference tables have not been populated and validated. We won't guess code table values.</div></div>
+ </section>
+ <section id="code" class="hidden">
+  <button class="back" data-home>← Home</button><div class="eyebrow">Code library</div><h2>NEC Reference</h2><p class="intro">Target edition: 2026 National Electrical Code (NFPA 70), subject to adoption and local amendments.</p>
+  <div class="card"><h3>Reference library roadmap</h3><div class="listrow"><span class="ico">🔎</span><div><b>Search by topic</b><div class="muted">Wiring methods, grounding, overcurrent, motors, boxes, and more.</div></div></div><div class="listrow"><span class="ico">📑</span><div><b>Article and table index</b><div class="muted">Show exact reference identifiers and edition notes.</div></div></div><div class="listrow"><span class="ico">🗺️</span><div><b>Local adoption</b><div class="muted">Record jurisdiction and effective edition.</div></div></div><div class="notice">The full NEC is copyrighted. The app can provide original explanations, limited reference metadata, and links to authorized resources; it will not reproduce the entire code text without appropriate rights.</div></div>
+ </section>
+ <section id="quick" class="hidden">
+  <button class="back" data-home>← Home</button><div class="eyebrow">Field reference</div><h2>Quick References</h2><div class="card"><h3>Core formulas</h3><p><b>Ohm's law</b><br>V = I × R &nbsp; · &nbsp; I = V ÷ R &nbsp; · &nbsp; R = V ÷ I</p><p><b>DC power</b><br>P = V × I &nbsp; · &nbsp; P = I²R &nbsp; · &nbsp; P = V² ÷ R</p><p><b>Single-phase real power</b><br>P = V × I × power factor</p><p><b>Balanced three-phase real power</b><br>P = √3 × line voltage × line current × power factor</p><p class="muted">AC power formulas require the appropriate RMS values and assumptions. Use the correct formula for the circuit and load.</p></div><div class="card"><h3>Next reference packs</h3><ul><li>Conduit bend multipliers and geometry</li><li>Wire and cable identification</li><li>Motor and transformer tables</li><li>Grounding and bonding references</li><li>Unit conversion and job notes</li></ul></div>
+ </section>
+ <section id="about" class="hidden">
+  <div class="eyebrow">Project</div><h2>About this toolbox</h2><div class="card"><p>This is the first foundation preview for an electrician's field app.</p><p><b>Standards target:</b> 2026 NEC; US customary units.</p><p><b>Design goals:</b> phone-first, fast, readable outdoors, and honest about assumptions.</p><p class="muted">Not a substitute for qualified electrical judgment, manufacturer instructions, or applicable laws and codes.</p></div>
+ </section>
 </main>
+<nav class="bottom" aria-label="Main navigation">
+ <button class="active" data-nav="home"><span>⌂</span>Home</button>
+ <button data-nav="conduit"><span>〰</span>Conduit</button>
+ <button data-nav="ohms"><span>⚡</span>Calculators</button>
+ <button data-nav="code"><span>▤</span>NEC & refs</button>
+</nav>
 <script>
-const data={"10":{m:5.76,s:1/16},"22.5":{m:2.6,s:3/16},"30":{m:2,s:1/4},"45":{m:1.4,s:3/8},"60":{m:1.155,s:1/2}};
-const $=id=>document.getElementById(id);function fmt(n){return Number.isFinite(n)?n.toFixed(2)+" in":"—"}
-function updateOffset(){let rise=Math.max(0,Number($("rise").value)||0),a=data[$("angle").value];$("spacing").textContent=fmt(rise*a.m);$("spacingNote").textContent=`${rise.toFixed(2)} in rise × ${a.m} multiplier`;$("shrink").textContent=fmt(rise*a.s);$("multiplier").textContent=a.m.toFixed(3).replace(/0+$/,"").replace(/\.$/,"")+"×";$("diagramSpacing").textContent=fmt(rise*a.m)+" apart"}
-function updateStub(){let h=Number($("height").value)||0,raw=$("takeup").value,t=Number(raw),valid=raw.trim()!==""&&Number.isFinite(t)&&t>=0,m=h-t;$("stubMark").textContent=valid?fmt(m):"Enter take-up";$("stubNote").textContent=valid?`${h.toFixed(2)} − ${t.toFixed(2)} take-up${m<0?" (check inputs)":""}`:"Use the verified value for the selected conduit size and bender.";$("takeupReminder").textContent=`Selected: ${sizeLabel($("stubSize").value)}. Verify take-up for this size and your exact bender model; do not assume a universal value.`}
-const diagrams={
-offset:{title:"Two-bend offset",desc:"Two bends in opposite directions create an offset around an obstruction.",svg:'<path d="M20 125 L95 125 L220 55 L320 55" fill="none" stroke="#f5b82e" stroke-width="7" stroke-linecap="round"/><path d="M95 145 L220 145" stroke="#dce8fb" stroke-dasharray="4 4"/><path d="M95 138v14 M220 138v14" stroke="#dce8fb"/><text x="157" y="164" fill="#dce8fb" font-size="12" text-anchor="middle">Mark spacing</text><text x="20" y="109" fill="#aebbd0" font-size="11">1st mark</text><text x="220" y="39" fill="#aebbd0" font-size="11">2nd mark</text>'},
-stub:{title:"90° stub-up",desc:"A 90° bend forms a vertical stub. The mark location depends on the specific bender's take-up.",svg:'<path d="M35 145 L35 48 Q35 25 58 25 L318 25" fill="none" stroke="#f5b82e" stroke-width="7" stroke-linecap="round"/><path d="M67 145 V25" stroke="#dce8fb" stroke-dasharray="4 4"/><text x="78" y="83" fill="#dce8fb" font-size="12">Stub height</text><text x="78" y="137" fill="#aebbd0" font-size="11">Start/end reference</text>'},
-kick:{title:"Kick bend",desc:"A single angled bend lifts conduit over a small obstruction; calculate from the required rise and angle, then verify mark placement for your bender.",svg:'<path d="M20 125 L110 125 L210 55 L320 55" fill="none" stroke="#f5b82e" stroke-width="7" stroke-linecap="round"/><path d="M110 125 L210 125" stroke="#dce8fb" stroke-dasharray="4 4"/><text x="145" y="145" fill="#dce8fb" font-size="12">Illustrative only</text><text x="210" y="39" fill="#aebbd0" font-size="11">Kick</text>'},
-saddle:{title:"Three-bend saddle concept",desc:"A center bend lifts over the obstruction, with two outer bends bringing the conduit back to its original path. Use your training and bender-specific layout rules.",svg:'<path d="M15 125 L82 125 L132 65 L208 65 L258 125 L325 125" fill="none" stroke="#f5b82e" stroke-width="7" stroke-linecap="round"/><rect x="140" y="90" width="60" height="35" rx="3" fill="#34425d" stroke="#aebbd0"/><text x="170" y="111" fill="#f4f7fb" font-size="10" text-anchor="middle">Object</text><text x="170" y="153" fill="#dce8fb" font-size="12" text-anchor="middle">3 bends · concept</text>'}
-};
-function updateDiagram(){let d=diagrams[$("diagramType").value];$("diagramTitle").textContent=d.title;$("diagramDescription").textContent=d.desc;$("bigDiagram").innerHTML=d.svg}
-$("rise").addEventListener("input",updateOffset);$("angle").addEventListener("change",updateOffset);$("height").addEventListener("input",updateStub);$("takeup").addEventListener("input",updateStub);$("stubSize").addEventListener("change",()=>{syncConduitSize("stubSize");renderStepProcedure()});$("stepSize").addEventListener("change",()=>{syncConduitSize("stepSize");renderStepProcedure()});$("diagramType").addEventListener("change",updateDiagram);
-document.querySelectorAll(".tab").forEach(b=>b.addEventListener("click",()=>{document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("active",x===b));document.querySelectorAll(".panel").forEach(p=>p.classList.toggle("hidden",p.id!==b.dataset.tab))}));
-const shareButton=$("shareApp");
-if(shareButton) shareButton.addEventListener("click",async()=>{
- const shareData={title:"BendBuddy — Electrician Helper",text:"Free EMT bending helpers, diagrams, and electrician field sheets.",url:"https://967wsfvrcf-glitch.github.io/BendBuddy/"};
- try{if(navigator.share){await navigator.share(shareData);$("shareStatus").textContent="Thanks for sharing BendBuddy!";}else if(navigator.clipboard&&navigator.clipboard.writeText){await navigator.clipboard.writeText(shareData.url);$("shareStatus").textContent="App link copied. Paste it into a message."; }else{$("shareStatus").textContent="Copy this link from Safari: https://967wsfvrcf-glitch.github.io/BendBuddy/";}}
- catch(e){$("shareStatus").textContent="You can share BendBuddy using Safari's Share button.";}
+const pages=["home","conduit","ohms","voltage","fill","code","quick","about"];
+function showPage(id){pages.forEach(p=>document.getElementById(p).classList.toggle("hidden",p!==id));document.querySelectorAll("[data-nav]").forEach(b=>b.classList.toggle("active",b.dataset.nav===id||(id==="voltage"||id==="fill"||id==="quick")&&b.dataset.nav==="ohms"||(id==="about")&&b.dataset.nav==="home"));window.scrollTo({top:0,behavior:"instant"});}
+document.querySelectorAll("[data-page]").forEach(b=>b.addEventListener("click",()=>showPage(b.dataset.page)));
+document.querySelectorAll("[data-nav]").forEach(b=>b.addEventListener("click",()=>showPage(b.dataset.nav)));
+document.querySelectorAll("[data-home]").forEach(b=>b.addEventListener("click",()=>showPage("home")));
+const num=id=>{const s=document.getElementById(id).value.trim();return s===""?null:Number(s)};
+const fmt=n=>Number.isFinite(n)?n.toLocaleString("en-US",{maximumFractionDigits:4}):"—";
+document.getElementById("solveOhm").addEventListener("click",()=>{
+ let v=num("v"),i=num("i"),r=num("r"),p=num("p");const a=[v,i,r,p].filter(x=>x!==null);
+ const box=document.getElementById("ohmResult");
+ if(a.length<2||a.some(x=>!Number.isFinite(x)||x<0)){box.innerHTML='<div class="notice">Enter at least two valid non-negative values. Use a positive value for resistance when solving a resistive circuit.</div>';return;}
+ // Generate candidates from every valid pair and keep internally consistent values.
+ let c=[];
+ const add=(V,I,R,P)=>{if([V,I,R,P].every(x=>Number.isFinite(x)&&x>=0))c.push({V,I,R,P})};
+ if(v!==null&&i!==null){add(v,i,i>0?v/i:null,v*i)}
+ if(v!==null&&r!==null&&r>0){add(v,v/r,r,v*v/r)}
+ if(i!==null&&r!==null){add(i*r,i,r,i*i*r)}
+ if(p!==null&&v!==null&&v>0){add(v,p/v,v*v/p,p)}
+ if(p!==null&&i!==null&&i>0){add(p/i,i,p/(i*i),p)}
+ if(p!==null&&r!==null&&r>0){add(Math.sqrt(p*r),Math.sqrt(p/r),r,p)}
+ if(!c.length){box.innerHTML='<div class="notice">Those values do not provide a valid solvable pair. Check that resistance is above zero where required.</div>';return;}
+ const z=c[0];box.innerHTML='<div class="result"><b>Calculated values</b><div class="row"><p>Voltage<br><strong>'+fmt(z.V)+' V</strong></p><p>Current<br><strong>'+fmt(z.I)+' A</strong></p><p>Resistance<br><strong>'+fmt(z.R)+' Ω</strong></p><p>Power<br><strong>'+fmt(z.P)+' W</strong></p></div><small>Check that any additional values you entered agree with this result.</small></div>';
 });
-
-const stepProcedures={
- offset:{title:"Two-bend offset",intro:"Move around an obstruction and return to the original run.",svg:'<path d="M20 122H104L214 52H320" fill="none" stroke="#ff8a18" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><path d="M104 132V145M214 62V145M104 140H214" stroke="#f5f6f8" stroke-width="1.6" stroke-dasharray="4 3"/><text x="159" y="158" text-anchor="middle" fill="#f5f6f8" font-size="11">Mark spacing</text><rect x="145" y="60" width="40" height="28" rx="4" fill="none" stroke="#b5bdc9" stroke-width="2" stroke-dasharray="4 3"/><text x="165" y="51" text-anchor="middle" fill="#b5bdc9" font-size="10">Obstruction</text>',steps:[["Measure the rise","Measure the vertical change needed to clear the obstruction, including required clearance."],["Choose the bend angle","Use the angle and multiplier appropriate for your bender and job. A smaller angle usually needs more spacing."],["Mark the conduit","Calculate spacing = rise × multiplier. Measure the calculated spacing along the conduit and draw two clear pencil lines. For the common same-plane offset method, align the bender arrow with mark 1, bend to the chosen angle, then rotate the conduit 180° and align the arrow with mark 2 for the second bend. Follow the instructions for your exact bender and method; not every offset technique uses the same rotation."],["Make the bends","For the common same-plane offset method, place the bender arrow directly over mark 1 and make the first bend to the selected angle. Rotate the conduit 180° around its length, then place the arrow over mark 2 and make the second bend to the same angle. Confirm the bender manufacturer’s method and keep both bends in the intended plane."],["Check the offset","Dry-fit and confirm clearance, alignment, and final position before cutting or installing."]]},
- stub:{title:"90° stub-up",intro:"Measure the target stub, subtract the take-up for your exact bender, then align the mark using that bender’s specified reference.",svg:'<path d="M40 135H160Q185 135 185 110V35" fill="none" stroke="#ff8a18" stroke-width="8" stroke-linecap="round"/><path d="M205 135V35M198 135H212M198 35H212" stroke="#f5f6f8" stroke-width="1.5"/><text x="219" y="85" fill="#f5f6f8" font-size="11">Target</text><path d="M42 151H160" stroke="#b5bdc9" stroke-dasharray="4 3"/><text x="100" y="166" fill="#b5bdc9" font-size="10" text-anchor="middle">Reference end</text>',steps:[["Measure the required stub","Measure the required stub height from the reference point specified by the job and bender instructions."],["Find and verify the bender take-up","Look for the take-up number stamped or printed on the bender head/shoe. If it is not marked clearly, check the manufacturer’s manual or chart for that exact bender model and conduit size. Confirm the value is for a 90° stub-up using the bender’s specified method. Do not guess or copy a value from another bender; if you cannot verify it, stop and check the manufacturer’s instructions before marking."],["Calculate the mark from the conduit end","For the common stub-up method, mark distance = target stub height − verified take-up. Example: 12 in target − 5 in take-up = mark 7 in from the conduit end. This example is illustrative only."],["Align the mark correctly","Put the mark at the bender’s specified arrow or other reference mark. The exact alignment point depends on the bender; follow its instructions rather than guessing."],["Bend and verify","Bend to 90° following the bender instructions. Measure the finished stub from the required reference point and check the angle and fit."]]},
- kick:{title:"Single kick bend",intro:"Create a change in direction to pass an obstruction or meet a fitting.",svg:'<path d="M20 130H120L205 58H320" fill="none" stroke="#ff8a18" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><path d="M120 130V145M205 58V145M120 140H205" stroke="#f5f6f8" stroke-width="1.5" stroke-dasharray="4 3"/><text x="163" y="158" fill="#f5f6f8" font-size="11" text-anchor="middle">Measured travel</text><path d="M135 127A24 24 0 0 1 150 110" fill="none" stroke="#b5bdc9" stroke-width="1.5"/><text x="154" y="105" fill="#b5bdc9" font-size="10">Angle</text>',steps:[["Locate the required change","Measure the rise or displacement and available straight length."],["Select the angle","Choose an angle that clears the obstruction and fits the run; check the bender's multiplier or instructions."],["Calculate travel and mark","Use the appropriate angle multiplier and mark reference for the measured rise. Confirm any shrink or end allowance."],["Align and bend","Orient the conduit to keep the bend in the intended plane, then bend to the selected angle."],["Check fit","Test against the actual route or fitting and verify clearance and alignment."]]},
- saddle:{title:"Three-bend saddle",intro:"A center bend and two outer bends lift conduit over an obstruction.",svg:'<path d="M18 132H78L112 68H228L262 132H322" fill="none" stroke="#ff8a18" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><rect x="137" y="86" width="66" height="35" rx="4" fill="none" stroke="#b5bdc9" stroke-width="2" stroke-dasharray="4 3"/><text x="170" y="106" fill="#b5bdc9" font-size="10" text-anchor="middle">Obstacle</text><path d="M78 143V155M112 80V155M228 80V155M262 143V155" stroke="#f5f6f8" stroke-width="1.3" stroke-dasharray="3 3"/><text x="170" y="167" fill="#f5f6f8" font-size="10" text-anchor="middle">Outer marks and center mark</text>',steps:[["Measure the obstacle","Measure the height and width to clear, including required clearance."],["Choose a saddle method","Confirm whether the task calls for a three-bend saddle and select angles per the bender's instructions."],["Find the center mark","Mark the center of the obstruction using the chosen reference point and planned bend geometry."],["Lay out outer marks","Calculate outer spacing using the correct angle multiplier and shrink guidance. Confirm all three marks before bending."],["Bend and inspect","Make the center and outer bends in the correct order and orientation per the bender's method. Verify the conduit clears and remains aligned."]]}
-};
-function sizeLabel(value){const labels={"1/2":"½-inch EMT","3/4":"¾-inch EMT","1":"1-inch EMT","1-1/4":"1¼-inch EMT","1-1/2":"1½-inch EMT","2":"2-inch EMT"};return labels[value]||value+" EMT"}
-function syncConduitSize(source){const val=$(source).value;["stubSize","stepSize"].forEach(id=>{if($(id)&&$(id).value!==val)$(id).value=val});if($("stepSizeNote"))$("stepSizeNote").textContent=`Walkthrough size: ${sizeLabel(val)}. Verify the bender is rated for this size and check its instructions.`;updateStub()}
-function updateOffsetMarkLayout(){
- const isOffset=$("stepType").value==="offset";
- $("offsetLayoutPanel").classList.toggle("hidden",!isOffset);
- const startRaw=$("offsetStart").value;
- const start=Number(startRaw);
- const rise=Math.max(0,Number($("rise").value)||0);
- const angle=data[$("angle").value];
- const gap=rise*angle.m;
- const valid=startRaw.trim()!==""&&Number.isFinite(start)&&start>=0;
- $("offsetMark1").textContent=valid?fmt(start):"Enter distance";
- $("offsetMarkGap").textContent=fmt(gap);
- $("offsetMark2").textContent=valid?fmt(start+gap):"—";
-}
-function renderStepProcedure(){
- const p=stepProcedures[$("stepType").value];if(!p)return;
- const selectedSize=sizeLabel($("stepSize").value);
- $("stepKicker").textContent="FIELD WALKTHROUGH";
- $("stepHeading").textContent=p.title;$("stepIntro").textContent=`${p.intro} Selected conduit: ${selectedSize}.`;$("stepVisual").innerHTML=p.svg;
- $("stepVisual").setAttribute("aria-label",p.title+" illustrative diagram with bend marks");
- const markGuides={
-  stub:'<path d="M22 96H300" stroke="#ff8a18" stroke-width="8" stroke-linecap="round"/><path d="M45 78V114" stroke="#ff4d5a" stroke-width="3"/><path d="M45 65V44H118" fill="none" stroke="#ff4d5a" stroke-width="1.5"/><text x="122" y="47" fill="#ffb4ba" font-size="11">Pencil mark</text><text x="22" y="132" fill="#f5f6f8" font-size="10">Conduit end</text><path d="M45 119H22M45 119H68" stroke="#dce8fb" stroke-width="1.2"/><path d="M190 82V110" stroke="#f5f6f8" stroke-width="2"/><path d="M182 88L190 80L198 88" fill="none" stroke="#f5f6f8" stroke-width="2"/><text x="190" y="68" fill="#dce8fb" font-size="10" text-anchor="middle">Bender reference</text><path d="M45 24H190M45 20V28M190 20V28" stroke="#dce8fb" stroke-dasharray="3 3"/><text x="118" y="16" fill="#dce8fb" font-size="10" text-anchor="middle">Mark distance from end</text><text x="170" y="146" fill="#b5bdc9" font-size="9" text-anchor="middle">Concept only — align using your bender&#39;s specified reference</text>',
-  offset:'<path d="M18 105H322" stroke="#ff8a18" stroke-width="8" stroke-linecap="round"/><path d="M82 81V129M248 81V129" stroke="#ff4d5a" stroke-width="3"/><text x="82" y="68" fill="#ffb4ba" font-size="11" text-anchor="middle">PENCIL MARK 1</text><text x="248" y="68" fill="#ffb4ba" font-size="11" text-anchor="middle">PENCIL MARK 2</text><path d="M82 42H248M82 37V47M248 37V47" stroke="#dce8fb" stroke-dasharray="3 3"/><text x="165" y="30" fill="#dce8fb" font-size="10" text-anchor="middle">Calculated spacing = rise × multiplier</text><rect x="42" y="112" width="80" height="27" rx="5" fill="#202b3d" stroke="#dce8fb"/><text x="82" y="123" fill="#f5f6f8" font-size="8" text-anchor="middle">BEND 1</text><text x="82" y="133" fill="#dce8fb" font-size="8" text-anchor="middle">Arrow → mark 1</text><rect x="208" y="112" width="80" height="27" rx="5" fill="#202b3d" stroke="#dce8fb"/><text x="248" y="123" fill="#f5f6f8" font-size="8" text-anchor="middle">BEND 2</text><text x="248" y="133" fill="#dce8fb" font-size="8" text-anchor="middle">Arrow → mark 2</text><text x="170" y="149" fill="#b5bdc9" font-size="9" text-anchor="middle">Concept only · rotate 180° between bends if using the standard same-plane offset method</text>',
-  kick:'<path d="M20 105H300" stroke="#ff8a18" stroke-width="8" stroke-linecap="round"/><path d="M135 82V128" stroke="#ff4d5a" stroke-width="3"/><text x="135" y="69" fill="#ffb4ba" font-size="11" text-anchor="middle">KICK MARK</text><path d="M135 42H220M135 37V47M220 37V47" stroke="#dce8fb" stroke-dasharray="3 3"/><text x="178" y="31" fill="#dce8fb" font-size="10" text-anchor="middle">Calculated travel / location</text><path d="M220 85V112" stroke="#f5f6f8" stroke-width="2"/><text x="230" y="80" fill="#dce8fb" font-size="10">Bender reference</text><text x="170" y="146" fill="#b5bdc9" font-size="9" text-anchor="middle">Mark location and reference depend on kick method and bender</text>',
-  saddle:'<path d="M15 105H325" stroke="#ff8a18" stroke-width="8" stroke-linecap="round"/><path d="M85 82V128M170 82V128M255 82V128" stroke="#ff4d5a" stroke-width="3"/><text x="85" y="68" fill="#ffb4ba" font-size="10" text-anchor="middle">OUTER 1</text><text x="170" y="68" fill="#ffb4ba" font-size="10" text-anchor="middle">CENTER</text><text x="255" y="68" fill="#ffb4ba" font-size="10" text-anchor="middle">OUTER 2</text><path d="M85 43H170M170 43H255M85 38V48M170 38V48M255 38V48" stroke="#dce8fb" stroke-dasharray="3 3"/><text x="170" y="29" fill="#dce8fb" font-size="10" text-anchor="middle">Calculated mark layout</text><text x="170" y="146" fill="#b5bdc9" font-size="9" text-anchor="middle">Confirm center/outer-mark method and alignment for your bender</text>'
- };
- $("markAlignmentVisual").innerHTML=markGuides[$("stepType").value]||markGuides.stub;
- $("markAlignmentVisual").setAttribute("aria-label",p.title+" mark location and bender reference illustration");
- $("stepCards").innerHTML=p.steps.map((st,i)=>'<article class="stepCard"><div class="stepNum">'+(i+1)+'</div><div><h4>'+st[0]+'</h4><p>'+st[1]+'</p></div></article>').join("");
-}
-$("stepType").addEventListener("change",()=>{renderStepProcedure();updateOffsetMarkLayout()});
-$("offsetStart").addEventListener("input",updateOffsetMarkLayout);
-$("rise").addEventListener("input",updateOffsetMarkLayout);
-$("angle").addEventListener("change",updateOffsetMarkLayout);
-renderStepProcedure();
-updateOffsetMarkLayout();
-
-updateOffset();updateStub();updateDiagram();
-
-let activeFieldFilter="all";
-function filterFieldSheets(){
- const q=($("fieldSearch").value||"").trim().toLowerCase();
- let shown=0;
- document.querySelectorAll(".fieldSheet").forEach(card=>{
-   const matchesCategory=activeFieldFilter==="all"||card.dataset.category===activeFieldFilter;
-   const hay=(card.innerText+" "+(card.dataset.search||"")).toLowerCase();
-   const matchesText=!q||hay.includes(q);
-   const show=matchesCategory&&matchesText;
-   card.classList.toggle("hidden",!show);
-   if(show) shown++;
- });
- $("noFieldResults").classList.toggle("hidden",shown>0);
-}
-$("fieldSearch").addEventListener("input",filterFieldSheets);
-document.querySelectorAll(".filter").forEach(b=>b.addEventListener("click",()=>{
- activeFieldFilter=b.dataset.filter;
- document.querySelectorAll(".filter").forEach(x=>x.classList.toggle("active",x===b));
- filterFieldSheets();
-}));
-
-if("serviceWorker" in navigator && location.protocol.startsWith("http")) navigator.serviceWorker.register("./sw.js").catch(()=>{});
+document.getElementById("clearOhm").addEventListener("click",()=>{["v","i","r","p"].forEach(id=>document.getElementById(id).value="");document.getElementById("ohmResult").innerHTML=""});
+document.getElementById("solveDrop").addEventListener("click",()=>{
+ const amps=num("amps"),feet=num("feet"),volts=num("sysv"),k=Number(document.getElementById("phase").value),factor=Number(document.getElementById("temp").value),wire=document.getElementById("wire").value;
+ const areas={"14":4110,"12":6530,"10":10380,"8":16510,"6":26240,"4":41740,"3":52620,"2":66360,"1":83690,"0":105600,"-1":133100,"-2":167800,"-3":211600,"250":250000,"300":300000,"350":350000,"500":500000};
+ const area=areas[wire],box=document.getElementById("dropResult");
+ if([amps,feet,volts].some(x=>x===null||!Number.isFinite(x)||x<=0)){box.innerHTML='<div class="notice">Enter positive current, length, and system voltage.</div>';return;}
+ // Simplified copper K-method: VD = K × I × length × circuit factor / CM.
+ const vd=factor*amps*feet*k/area,pct=vd/volts*100;
+ box.innerHTML='<div class="result"><b>Estimated drop: '+fmt(vd)+' V</b><p>Approx. voltage at load: '+fmt(volts-vd)+' V</p><p>Voltage drop: '+fmt(pct)+'%</p><small>Simplified K-method estimate only. This does not determine code compliance or final conductor size.</small></div>';
+});
 </script>
-</body></html>
+</body>
+</html>
