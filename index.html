@@ -233,6 +233,19 @@ button:active{transform:scale(.98)}
 <option value="kick">Single kick</option>
 <option value="saddle">Three-bend saddle</option>
 </select>
+<div id="offsetLayoutPanel" class="result">
+<h4 style="margin:0 0 6px">Offset mark measurements</h4>
+<p class="note">Enter how far the first bend mark should be from the conduit end, based on your job layout. BendBuddy calculates the second mark from the rise and selected angle.</p>
+<label for="offsetStart">Conduit end to first bend mark (inches)</label>
+<input id="offsetStart" type="number" inputmode="decimal" min="0" step="0.125" value="12">
+<div class="results2">
+<div class="mini"><span class="note">End → Mark 1</span><strong id="offsetMark1">12.00 in</strong></div>
+<div class="mini"><span class="note">Mark 1 → Mark 2</span><strong id="offsetMarkGap">4.00 in</strong></div>
+<div class="mini"><span class="note">End → Mark 2</span><strong id="offsetMark2">16.00 in</strong></div>
+<div class="mini"><span class="note">Bend alignment</span><strong style="font-size:15px">Arrow → each mark</strong></div>
+</div>
+<p class="note">These are layout distances along the straight conduit, not distances measured along a bent section. Confirm the intended first-mark location from the obstruction, fittings, and plans. Diagram is illustrative and not to scale.</p>
+</div>
 <div class="stepHero">
 <div class="stepKicker" id="stepKicker">PROCEDURE 01</div>
 <h3 id="stepHeading">Two-bend offset</h3>
@@ -284,6 +297,19 @@ const stepProcedures={
 };
 function sizeLabel(value){const labels={"1/2":"½-inch EMT","3/4":"¾-inch EMT","1":"1-inch EMT","1-1/4":"1¼-inch EMT","1-1/2":"1½-inch EMT","2":"2-inch EMT"};return labels[value]||value+" EMT"}
 function syncConduitSize(source){const val=$(source).value;["stubSize","stepSize"].forEach(id=>{if($(id)&&$(id).value!==val)$(id).value=val});if($("stepSizeNote"))$("stepSizeNote").textContent=`Walkthrough size: ${sizeLabel(val)}. Verify the bender is rated for this size and check its instructions.`;updateStub()}
+function updateOffsetMarkLayout(){
+ const isOffset=$("stepType").value==="offset";
+ $("offsetLayoutPanel").classList.toggle("hidden",!isOffset);
+ const startRaw=$("offsetStart").value;
+ const start=Number(startRaw);
+ const rise=Math.max(0,Number($("rise").value)||0);
+ const angle=data[$("angle").value];
+ const gap=rise*angle.m;
+ const valid=startRaw.trim()!==""&&Number.isFinite(start)&&start>=0;
+ $("offsetMark1").textContent=valid?fmt(start):"Enter distance";
+ $("offsetMarkGap").textContent=fmt(gap);
+ $("offsetMark2").textContent=valid?fmt(start+gap):"—";
+}
 function renderStepProcedure(){
  const p=stepProcedures[$("stepType").value];if(!p)return;
  const selectedSize=sizeLabel($("stepSize").value);
@@ -300,8 +326,12 @@ function renderStepProcedure(){
  $("markAlignmentVisual").setAttribute("aria-label",p.title+" mark location and bender reference illustration");
  $("stepCards").innerHTML=p.steps.map((st,i)=>'<article class="stepCard"><div class="stepNum">'+(i+1)+'</div><div><h4>'+st[0]+'</h4><p>'+st[1]+'</p></div></article>').join("");
 }
-$("stepType").addEventListener("change",renderStepProcedure);
+$("stepType").addEventListener("change",()=>{renderStepProcedure();updateOffsetMarkLayout()});
+$("offsetStart").addEventListener("input",updateOffsetMarkLayout);
+$("rise").addEventListener("input",updateOffsetMarkLayout);
+$("angle").addEventListener("change",updateOffsetMarkLayout);
 renderStepProcedure();
+updateOffsetMarkLayout();
 
 updateOffset();updateStub();updateDiagram();
 
