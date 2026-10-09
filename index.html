@@ -11,17 +11,31 @@
 :root{--bg:#0b1020;--panel:#151d30;--text:#f4f7fb;--muted:#aebbd0;--accent:#f5b82e;--line:#34425d}
 *{box-sizing:border-box}body{margin:0;background:linear-gradient(160deg,#0b1020,#101b2e 55%,#0a1222);color:var(--text);font:16px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
 header{padding:22px 17px 15px;max-width:760px;margin:auto}.eyebrow{color:var(--accent);font-size:12px;letter-spacing:.15em;font-weight:800;text-transform:uppercase}h1{margin:5px 0;font-size:32px;line-height:1.08}header p{margin:8px 0 0;color:var(--muted)}
-main{max-width:760px;margin:auto;padding:0 13px 34px}.tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:13px}.tab{border:1px solid var(--line);background:var(--panel);color:var(--muted);padding:11px 3px;border-radius:11px;font-weight:750;font-size:12px}.tab.active{background:var(--accent);border-color:var(--accent);color:#151515}
+main{max-width:760px;margin:auto;padding:0 13px 34px}.tabs{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:5px;margin-bottom:13px}.tab{border:1px solid var(--line);background:var(--panel);color:var(--muted);padding:11px 2px;border-radius:11px;font-weight:750;font-size:11px;line-height:1.2}.tab.active{background:var(--accent);border-color:var(--accent);color:#151515}
 .card{background:rgba(21,29,48,.96);border:1px solid var(--line);border-radius:17px;padding:16px;margin-bottom:13px;box-shadow:0 12px 28px #0002}h2{font-size:20px;margin:0 0 10px}label{display:block;font-weight:700;font-size:14px;margin:12px 0 6px;color:#dbe4f3}
 input,select{width:100%;background:#0d1526;color:var(--text);border:1px solid #3b4b68;border-radius:11px;padding:12px;font:inherit;min-height:46px}.row{display:grid;grid-template-columns:1fr 1fr;gap:9px}.result{background:#0d1526;border:1px solid #354562;border-radius:13px;padding:13px;margin-top:13px}.result small{display:block;color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.08em;font-weight:800}.big{font-size:28px;font-weight:850;color:var(--accent);margin-top:3px}.results2{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:9px}.mini{background:#0d1526;border:1px solid #354562;border-radius:12px;padding:11px}.mini strong{display:block;color:var(--accent);font-size:20px}.note{color:var(--muted);font-size:13px}.pill{display:inline-block;background:#24344b;color:#dce8fb;border-radius:999px;padding:4px 8px;font-size:12px;font-weight:700}ul{padding-left:20px;color:#dbe4f3}li{margin:7px 0}.hidden{display:none}.primary{width:100%;margin-top:12px;border:0;border-radius:12px;background:var(--accent);color:#191919;font-size:15px;font-weight:850;padding:13px}.diagram{width:100%;height:auto;display:block;background:#0d1526;border:1px solid #354562;border-radius:13px;margin-top:12px}.footer{color:#8f9eb6;font-size:12px;text-align:center;padding:15px 5px}.status{font-size:12px;color:#aebbd0;margin-top:8px}
-@media(min-width:520px){.tabs{gap:8px}.tab{font-size:14px}}
+@media(min-width:520px){.tabs{gap:8px}.tab{font-size:14px;padding:11px 5px}}
+
+.fieldFilters{display:flex;flex-wrap:wrap;gap:7px;margin:12px 0}
+.filter{border:1px solid var(--line);border-radius:999px;padding:8px 12px;background:#0d1526;color:var(--muted);font-weight:750}
+.filter.active{background:var(--accent);color:#151515;border-color:var(--accent)}
+.fieldSheet{background:#0d1526;border:1px solid #354562;border-radius:13px;padding:14px;margin-top:10px}
+.fieldSheet h3{font-size:17px;margin:0 0 8px;color:#f5b82e}
+.fieldSheet p{margin:8px 0;color:#dbe4f3}
+.fieldSheet ul,.fieldSheet ol{margin:8px 0;padding-left:21px}
+.fieldGrid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}
+.fieldMini{background:#151d30;border:1px solid #34425d;border-radius:9px;padding:8px 4px;text-align:center}
+.fieldMini b,.fieldMini span{display:block}
+.fieldMini b{font-size:12px;color:#f5b82e}
+.fieldMini span{font-size:12px}
+
 </style>
 </head>
 <body>
 <header><div class="eyebrow">Free field tool · PWA prototype</div><h1>⚡ BendBuddy</h1><p>EMT bending calculations and visual bend-mark guides. Add it to your iPhone Home Screen for app-like access.</p></header>
 <main>
 <div class="tabs">
-<button class="tab active" data-tab="offset">Offset</button><button class="tab" data-tab="stub">90° Stub</button><button class="tab" data-tab="diagrams">Diagrams</button><button class="tab" data-tab="guide">Guide</button>
+<button class="tab active" data-tab="offset">Offset</button><button class="tab" data-tab="stub">90° Stub</button><button class="tab" data-tab="diagrams">Diagrams</button><button class="tab" data-tab="guide">Guide</button><button class="tab" data-tab="field">Field Sheets</button>
 </div>
 <section id="offset" class="panel"><div class="card">
 <h2>Offset calculator</h2><p class="note">Calculate the spacing between two bends from the rise and selected bend angle.</p>
@@ -53,6 +67,83 @@ input,select{width:100%;background:#0d1526;color:var(--text);border:1px solid #3
 <ul><li><b>Offset:</b> spacing = rise × multiplier.</li><li><b>10°:</b> multiplier 5.76; approximate shrink 1/16 in per inch of rise.</li><li><b>22.5°:</b> multiplier 2.6; approximate shrink 3/16 in per inch of rise.</li><li><b>30°:</b> multiplier 2; approximate shrink 1/4 in per inch of rise.</li><li><b>45°:</b> multiplier 1.4; approximate shrink 3/8 in per inch of rise.</li><li><b>60°:</b> multiplier 1.155; approximate shrink 1/2 in per inch of rise.</li><li><b>90° stub:</b> mark = desired stub height − bender take-up.</li></ul>
 <p class="note">These are approximate field formulas. Follow the bender's markings, plans, applicable code, and employer procedures. Verify before cutting or bending.</p>
 </div><div class="card"><h2>Planned upgrades</h2><ul><li>Box offsets and kick-bend calculator</li><li>Fraction-friendly measurements</li><li>Saved bender take-up values</li><li>More illustrated bend sequences</li></ul></div></section>
+
+<section id="field" class="panel hidden">
+<div class="card">
+<h2>⚡ Electrician field sheets</h2>
+<p class="note">Fast reminders for common field tasks. Search by topic, or tap a category. These are reference notes—not a substitute for the adopted electrical code, approved plans, manufacturer instructions, or your employer's procedures.</p>
+<label for="fieldSearch">Search field sheets</label>
+<input id="fieldSearch" type="search" placeholder="Try: box fill, wire, conduit, GFCI…" autocomplete="off">
+<div class="fieldFilters" id="fieldFilters">
+<button class="filter active" data-filter="all">All</button>
+<button class="filter" data-filter="conduit">Conduit</button>
+<button class="filter" data-filter="wiring">Wiring</button>
+<button class="filter" data-filter="safety">Safety</button>
+<button class="filter" data-filter="troubleshoot">Troubleshooting</button>
+</div>
+<div id="fieldCards">
+<article class="fieldSheet" data-category="conduit" data-search="emt offset multiplier spacing shrink rise angle bend">
+<h3>EMT offset quick reference</h3>
+<p class="note">Spacing ≈ rise × multiplier. Approximate multipliers:</p>
+<div class="fieldGrid">
+<div class="fieldMini"><b>10°</b><span>5.76×</span></div><div class="fieldMini"><b>22.5°</b><span>2.6×</span></div><div class="fieldMini"><b>30°</b><span>2×</span></div><div class="fieldMini"><b>45°</b><span>1.4×</span></div><div class="fieldMini"><b>60°</b><span>1.155×</span></div>
+</div>
+<p>Example: a 2-inch rise at 30° gives about 4 inches between marks.</p>
+<p class="note">Shrink depends on bend angle and rise; confirm the appropriate multiplier and bender guidance.</p>
+</article>
+<article class="fieldSheet" data-category="conduit" data-search="90 stub up take up deduct mark bender">
+<h3>90° stub-up reminder</h3>
+<ol><li>Choose the required stub height.</li><li>Find the take-up stamped on the correct bender or in its instructions.</li><li>Mark the conduit: desired height − take-up.</li><li>Align the mark with the bender's arrow and bend using the bender instructions.</li></ol>
+<p class="note">Take-up varies by bender and conduit size. Do not rely on a universal take-up number.</p>
+</article>
+<article class="fieldSheet" data-category="conduit" data-search="conduit fill raceway fill conductors code">
+<h3>Conduit fill: check before pulling</h3>
+<ul><li>Count all conductors/cables and identify their insulation and sizes.</li><li>Use the adopted code's raceway-fill tables and rules for the exact raceway type and conductor combination.</li><li>Account for equipment grounding conductors, cable assemblies, nipples, and other applicable rules.</li><li>Check conductor ampacity adjustment and terminal temperature limits separately from fill.</li></ul>
+<p class="note">Do not guess fill from appearance. Use the applicable code tables or an approved calculator.</p>
+</article>
+<article class="fieldSheet" data-category="wiring" data-search="wire ampacity wire size breaker load copper aluminum voltage drop">
+<h3>Wire size & breaker check</h3>
+<ul><li>Confirm load, continuous-load requirements, conductor material, insulation rating, ambient temperature, and number of current-carrying conductors.</li><li>Verify overcurrent protection, terminal temperature ratings, and any equipment-specific instructions.</li><li>Check voltage drop for long runs where applicable.</li><li>Never choose wire size from breaker size alone.</li></ul>
+<p class="note">Use the locally adopted electrical code and approved design; this sheet intentionally does not prescribe a universal wire size.</p>
+</article>
+<article class="fieldSheet" data-category="wiring" data-search="box fill electrical box volume conductor count devices clamps grounds">
+<h3>Box fill: count carefully</h3>
+<ul><li>Identify the box's marked volume or listed volume.</li><li>Count insulated conductors, device yokes, internal clamps, and equipment grounding conductors using the applicable code rules.</li><li>Use the correct volume allowance for the conductor size.</li><li>Confirm the box is listed for the installation and has enough room for safe terminations.</li></ul>
+<p class="note">Box-fill calculations are code-specific. Use the current adopted rules and listed box volume.</p>
+</article>
+<article class="fieldSheet" data-category="safety" data-search="lockout tagout verify absence voltage tester PPE arc flash energized safety">
+<h3>Before working on electrical equipment</h3>
+<ol><li>Identify all sources, including backfeeds, stored energy, and alternate supplies.</li><li>Follow the site's lockout/tagout procedure and apply your personal lock as required.</li><li>Use a properly rated tester and verify it on a known live source, test for absence of voltage, then re-verify the tester.</li><li>Use the required PPE and boundaries based on the risk assessment.</li></ol>
+<p class="note"><b>Never assume equipment is de-energized.</b> Only qualified persons should perform electrical work, following applicable rules and training.</p>
+</article>
+<article class="fieldSheet" data-category="safety" data-search="ladder overhead power lines heat hydration PPE jobsite">
+<h3>Jobsite quick safety scan</h3>
+<ul><li>Look for overhead lines, wet conditions, damaged cords, sharp edges, and trip hazards.</li><li>Inspect tools, leads, ladders, and PPE before use.</li><li>Keep ladders and long conduit away from power lines; follow required clearances.</li><li>In hot conditions, take breaks, cool down, and follow the site's hydration and heat-safety plan.</li></ul>
+<p class="note">Stop and ask the supervisor when the hazard or safe procedure is unclear.</p>
+</article>
+<article class="fieldSheet" data-category="troubleshoot" data-search="troubleshooting dead circuit breaker trip receptacle voltage meter diagnose">
+<h3>Dead circuit: safe first checks</h3>
+<ul><li>Ask what changed and identify the affected equipment and circuit.</li><li>Check drawings, labels, and upstream devices without opening energized equipment unless qualified and authorized.</li><li>Use a properly rated meter and safe work procedures to verify conditions.</li><li>Check for tripped protective devices only when safe; investigate why a breaker or GFCI tripped before resetting repeatedly.</li></ul>
+<p class="note">Do not bypass protective devices or repeatedly reset a device that trips again.</p>
+</article>
+<article class="fieldSheet" data-category="troubleshoot" data-search="GFCI trips ground fault moisture load reset troubleshooting">
+<h3>GFCI keeps tripping</h3>
+<ul><li>Unplug connected loads if safe and permitted.</li><li>Look for moisture, damaged cords, or equipment faults.</li><li>Do not defeat the GFCI or replace it with a non-protective device.</li><li>If it trips with loads disconnected or will not reset, stop and investigate per approved procedures.</li></ul>
+</article>
+<article class="fieldSheet" data-category="conduit" data-search="EMT support spacing straps fittings connectors reaming sharp edges">
+<h3>EMT installation reminders</h3>
+<ul><li>Use fittings listed for the raceway and environment.</li><li>Ream cut ends and protect conductors from sharp edges.</li><li>Support and secure raceway according to the adopted code and installation conditions.</li><li>Check bonding/grounding continuity and fitting tightness as required.</li></ul>
+<p class="note">Exact support spacing and exceptions depend on the adopted code and installation.</p>
+</article>
+</div>
+<p id="noFieldResults" class="note hidden">No sheets match that search. Try a shorter keyword.</p>
+</div>
+<div class="card">
+<h2>Save a useful note</h2>
+<p class="note">This version does not store personal notes. Use the Share button in Safari or your preferred notes app if you want to keep a job-specific reminder.</p>
+</div>
+</section>
+
 <div class="footer">BendBuddy prototype · Free to use · Always verify calculations and manufacturer instructions.<div class="status" id="installStatus">Tip: use Safari's Share menu → Add to Home Screen after hosting securely.</div></div>
 </main>
 <script>
@@ -70,6 +161,28 @@ function updateDiagram(){let d=diagrams[$("diagramType").value];$("diagramTitle"
 $("rise").addEventListener("input",updateOffset);$("angle").addEventListener("change",updateOffset);$("height").addEventListener("input",updateStub);$("takeup").addEventListener("input",updateStub);$("diagramType").addEventListener("change",updateDiagram);
 document.querySelectorAll(".tab").forEach(b=>b.addEventListener("click",()=>{document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("active",x===b));document.querySelectorAll(".panel").forEach(p=>p.classList.toggle("hidden",p.id!==b.dataset.tab))}));
 updateOffset();updateStub();updateDiagram();
+
+let activeFieldFilter="all";
+function filterFieldSheets(){
+ const q=($("fieldSearch").value||"").trim().toLowerCase();
+ let shown=0;
+ document.querySelectorAll(".fieldSheet").forEach(card=>{
+   const matchesCategory=activeFieldFilter==="all"||card.dataset.category===activeFieldFilter;
+   const hay=(card.innerText+" "+(card.dataset.search||"")).toLowerCase();
+   const matchesText=!q||hay.includes(q);
+   const show=matchesCategory&&matchesText;
+   card.classList.toggle("hidden",!show);
+   if(show) shown++;
+ });
+ $("noFieldResults").classList.toggle("hidden",shown>0);
+}
+$("fieldSearch").addEventListener("input",filterFieldSheets);
+document.querySelectorAll(".filter").forEach(b=>b.addEventListener("click",()=>{
+ activeFieldFilter=b.dataset.filter;
+ document.querySelectorAll(".filter").forEach(x=>x.classList.toggle("active",x===b));
+ filterFieldSheets();
+}));
+
 if("serviceWorker" in navigator && location.protocol.startsWith("http")) navigator.serviceWorker.register("./sw.js").catch(()=>{});
 </script>
 </body></html>

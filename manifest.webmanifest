@@ -1,8 +1,9 @@
 {
   "name": "BendBuddy \u2014 EMT Helper",
   "short_name": "BendBuddy",
-  "description": "Free EMT bending helper with calculations and bend diagrams.",
+  "description": "Free EMT bending calculators, diagrams, and electrician field sheets.",
   "start_url": "./index.html",
+  "scope": "./",
   "display": "standalone",
   "background_color": "#0b1020",
   "theme_color": "#111827",
